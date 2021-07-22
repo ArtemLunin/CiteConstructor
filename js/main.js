@@ -51,6 +51,18 @@ const createHeader = (param) => {
 		logo.alt = param.title;
 		wrapper.append(logo);
 	}
+	if(param.header.menu){
+		const nav = getElement('nav', ['menu-list']);
+		const allMenuLink = param.header.menu.map(item => {
+			const link = getElement('a', ['menu-link'], {
+				href: item.link,
+				textContent: item.title,
+			});
+			return link;
+		});
+		nav.append(...allMenuLink);
+		wrapper.append(nav);
+	}
 	if(param.header.social) {
 		const socialWrapper = getElement('div',['social']);
 		const allSocial = param.header.social.map(item => {
@@ -89,20 +101,34 @@ movieConstructor('.app', {
 		social: [
 			{
 				title: 'Twitter',
-				link: 'twitter.com',
+				link: 'https://twitter.com',
 				image: 'witcher/social/twitter.svg',
 			},
 			{
 				title: 'Instagram',
-				link: 'istagram.com',
+				link: 'https://instagram.com',
 				image: 'witcher/social/instagram.svg',
 			},
 			{
 				title: 'Facebook',
-				link: 'facebook.com',
+				link: 'https://facebook.com',
 				image: 'witcher/social/facebook.svg',	
 			},
 		],
+		menu: [
+			{
+				title: 'Описание',
+				link: '#',
+			},
+			{
+				title: 'Трейлер',
+				link: '#',
+			},
+			{
+				title: 'Отзывы',
+				link: '#',
+			},
+		]
 	}
 });
 
