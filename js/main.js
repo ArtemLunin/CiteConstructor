@@ -23,11 +23,16 @@ menuButton.addEventListener('click', function () {
 })
 */
 
-const getElement = (tagName, classNames) => {
+const getElement = (tagName, classNames, attributes) => {
 	const element = document.createElement(tagName);
 
 	if(classNames) {
 		element.classList.add(...classNames);
+	}
+	if(attributes) {
+		for(const attribute in attributes) {
+			element[attribute] = attributes[attribute];
+		}
 	}
 	return element;
 };
@@ -38,10 +43,29 @@ const createHeader = (param) => {
 	const wrapper = getElement('div', ['header']);
 
 	if(param.header.logo) {
-		const logo = getElement('img', ['logo']);
+		const logo = getElement('img', ['logo'], {
+			src: param.header.logo,
+			alt: 'Логотип ' + param.title,
+		});
 		logo.src = param.header.logo;
 		logo.alt = param.title;
 		wrapper.append(logo);
+	}
+	if(param.header.social) {
+		const socialWrapper = getElement('div',['social']);
+		const allSocial = param.header.social.map(item => {
+			const socialLink = getElement('a', ['social-link']);
+			socialLink.append(getElement('img', [], {
+				src: item.image,
+				alt: item.title,
+			}));
+			socialLink.href = item.link;
+
+			return socialLink;
+
+		});
+		socialWrapper.append(...allSocial);
+		wrapper.append(socialWrapper);
 	}
 	
 	header.append(container);
@@ -62,6 +86,23 @@ movieConstructor('.app', {
 	title: 'Ведьмак',
 	header: {
 		logo: 'witcher/logo.png',
+		social: [
+			{
+				title: 'Twitter',
+				link: 'twitter.com',
+				image: 'witcher/social/twitter.svg',
+			},
+			{
+				title: 'Instagram',
+				link: 'istagram.com',
+				image: 'witcher/social/instagram.svg',
+			},
+			{
+				title: 'Facebook',
+				link: 'facebook.com',
+				image: 'witcher/social/facebook.svg',	
+			},
+		],
 	}
 });
 
